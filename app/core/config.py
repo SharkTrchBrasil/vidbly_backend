@@ -58,3 +58,7 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 settings = Settings()
+
+# Correção para o SQLAlchemy 2.0+ que não aceita mais 'postgres://' (apenas 'postgresql://')
+if settings.DATABASE_URL and settings.DATABASE_URL.startswith("postgres://"):
+    settings.DATABASE_URL = settings.DATABASE_URL.replace("postgres://", "postgresql://", 1)
