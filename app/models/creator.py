@@ -29,5 +29,7 @@ class CreatorProfile(Base):
     is_approved = Column(Boolean, default=False)
     pix_key = Column(String(255))
     pix_key_type = Column(String(20))
+    stripe_account_id = Column(String(255))
+    stripe_onboarding_complete = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

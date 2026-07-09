@@ -35,6 +35,7 @@ class CreatorProfileResponse(CreatorProfileBase):
     rating: float
     completed_jobs: int
     is_approved: bool
+    stripe_onboarding_complete: bool = False
     created_at: datetime
     updated_at: datetime
 
