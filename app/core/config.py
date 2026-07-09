@@ -18,6 +18,12 @@ class Settings(BaseSettings):
     EFI_CLIENT_SECRET: str = os.getenv("EFI_CLIENT_SECRET", "")
     EFI_CERTIFICATE_PATH: str = os.getenv("EFI_CERTIFICATE_PATH", "")
 
+    # AWS S3
+    AWS_ACCESS_KEY_ID: str = os.getenv("AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY: str = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+    AWS_REGION_NAME: str = os.getenv("AWS_REGION_NAME", "us-east-1")
+    AWS_BUCKET_NAME: str = os.getenv("AWS_BUCKET_NAME", "vidbly-videos-staging")
+
     class Config:
         case_sensitive = True
 

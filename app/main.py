@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
-from .api import auth, creators, brands, jobs
+from .api import auth, creators, brands, jobs, upload
 from .database import engine, Base
 
 # Create tables (For dev only. In prod use alembic)
@@ -25,6 +25,7 @@ app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["aut
 app.include_router(creators.router, prefix=f"{settings.API_V1_STR}/creators", tags=["creators"])
 app.include_router(brands.router, prefix=f"{settings.API_V1_STR}/brands", tags=["brands"])
 app.include_router(jobs.router, prefix=f"{settings.API_V1_STR}/jobs", tags=["jobs"])
+app.include_router(upload.router, prefix=f"{settings.API_V1_STR}/upload", tags=["upload"])
 
 @app.get("/")
 def root():
