@@ -33,7 +33,7 @@ def create_pix_charge(job_id: str, amount: float):
         "valor": {
             "original": f"{amount:.2f}"
         },
-        "chave": "sua-chave-pix@vidbly.com", # REPLACE WITH REAL KEY
+        "chave": settings.PIX_KEY,
         "infoAdicionais": [
             {
                 "nome": "Job ID",

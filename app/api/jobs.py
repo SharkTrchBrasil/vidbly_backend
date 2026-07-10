@@ -10,6 +10,34 @@ from ..models.job import Job
 from ..schemas.job import JobCreate, JobUpdate, JobResponse
 from ..core.dependencies import get_current_active_user
 
+def calculate_job_pricing(job_data: dict) -> tuple[float, float, float]:
+    """Returns (budget_per_video, platform_fee, total_price) based on tier and addons"""
+    base_prices = {
+        "depoimento": 89.0,
+        "unboxing": 149.0,
+        "review": 249.0,
+        "premium": 399.0,
+        "pack": 349.0
+    }
+    
+    tier = job_data.get("pricing_tier", "depoimento")
+    base_price = base_prices.get(tier, 89.0)
+    
+    # Add-ons
+    addons = 0.0
+    if job_data.get("addon_express_delivery"): addons += 49.0
+    if job_data.get("addon_pro_editing"): addons += 79.0
+    if job_data.get("addon_premium_creator"): addons += 39.0
+    if job_data.get("addon_extra_revisions"): addons += 29.0
+    if job_data.get("addon_extended_rights"): addons += 59.0
+    
+    total_price = base_price + addons
+    platform_fee = total_price * 0.25
+    budget_per_video = total_price - platform_fee
+    
+    return budget_per_video, platform_fee, total_price
+
+
 router = APIRouter()
 
 @router.post("", response_model=JobResponse, status_code=status.HTTP_201_CREATED)
@@ -25,15 +53,17 @@ def create_job(
     if not brand_profile:
         raise HTTPException(status_code=400, detail="Brand profile not setup")
         
-    # Calculate platform fee (25%)
-    platform_fee = job_in.budget_per_video * 0.25
-    total_price = job_in.budget_per_video + platform_fee
+    # Calculate pricing dynamically
+    job_dict = job_in.model_dump()
+    budget, fee, total = calculate_job_pricing(job_dict)
+    
+    job_dict["budget_per_video"] = budget
+    job_dict["platform_fee"] = fee
+    job_dict["total_price"] = total
     
     job = Job(
         brand_id=brand_profile.id,
-        platform_fee=platform_fee,
-        total_price=total_price,
-        **job_in.model_dump()
+        **job_dict
     )
     db.add(job)
     db.commit()
@@ -97,10 +127,27 @@ def update_job(
         raise HTTPException(status_code=400, detail="Cannot edit a job that is not a draft")
         
     update_data = job_in.model_dump(exclude_unset=True)
-    if 'budget_per_video' in update_data:
-        # Recalculate fees
-        job.platform_fee = update_data['budget_per_video'] * 0.25
-        job.total_price = update_data['budget_per_video'] + job.platform_fee
+    
+    # If pricing tier or any addon is updated, recalculate pricing
+    pricing_fields = ["pricing_tier", "addon_express_delivery", "addon_pro_editing", 
+                      "addon_premium_creator", "addon_extra_revisions", "addon_extended_rights"]
+    
+    if any(field in update_data for field in pricing_fields):
+        # Merge current job data with updates to calculate new price
+        current_data = {
+            "pricing_tier": job.pricing_tier,
+            "addon_express_delivery": job.addon_express_delivery,
+            "addon_pro_editing": job.addon_pro_editing,
+            "addon_premium_creator": job.addon_premium_creator,
+            "addon_extra_revisions": job.addon_extra_revisions,
+            "addon_extended_rights": job.addon_extended_rights,
+        }
+        current_data.update(update_data)
+        
+        budget, fee, total = calculate_job_pricing(current_data)
+        job.budget_per_video = budget
+        job.platform_fee = fee
+        job.total_price = total
         
     for field, value in update_data.items():
         setattr(job, field, value)

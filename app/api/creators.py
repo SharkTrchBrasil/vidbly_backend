@@ -72,6 +72,8 @@ def create_stripe_onboarding(
     profile = db.query(CreatorProfile).filter(CreatorProfile.user_id == current_user.id).first()
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found. Complete profile first.")
+    if not profile.cpf:
+        raise HTTPException(status_code=400, detail="CPF is required for Stripe onboarding.")
 
     # Se ainda não tem conta Stripe, cria
     if not profile.stripe_account_id:
@@ -80,7 +82,7 @@ def create_stripe_onboarding(
                 email=current_user.email,
                 first_name=profile.first_name,
                 last_name=profile.last_name,
-                cpf=profile.cpf or "00000000000" # fallback temporário
+                cpf=profile.cpf
             )
             profile.stripe_account_id = account_id
             db.commit()

@@ -29,10 +29,11 @@ if os.getenv("ENVIRONMENT") == "production" or os.getenv("AWS_ACCESS_KEY_ID"):
     aws_secrets = get_aws_secrets()
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Reelfy"
+    PROJECT_NAME: str = "Vidbly"
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = os.getenv("SECRET_KEY", "super-secret-key-change-this-in-production")
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15 # 15 minutes
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7 # 7 days
     
     # Database & Redis
     DATABASE_URL: str = aws_secrets.get("DATABASE_URL", os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/reelfy"))
@@ -42,6 +43,7 @@ class Settings(BaseSettings):
     EFI_CLIENT_ID: str = os.getenv("EFI_CLIENT_ID", "")
     EFI_CLIENT_SECRET: str = os.getenv("EFI_CLIENT_SECRET", "")
     EFI_CERTIFICATE_PATH: str = os.getenv("EFI_CERTIFICATE_PATH", "")
+    PIX_KEY: str = os.getenv("PIX_KEY", "sua-chave-pix@vidbly.com")
 
     # AWS S3
     AWS_ACCESS_KEY_ID: str = os.getenv("AWS_ACCESS_KEY_ID", "")
@@ -58,6 +60,9 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 settings = Settings()
+
+if os.getenv("ENVIRONMENT") == "production" and settings.SECRET_KEY == "super-secret-key-change-this-in-production":
+    raise ValueError("You must configure a strong SECRET_KEY for production!")
 
 # Correção para o SQLAlchemy 2.0+ que não aceita mais 'postgres://' (apenas 'postgresql://')
 if settings.DATABASE_URL and settings.DATABASE_URL.startswith("postgres://"):

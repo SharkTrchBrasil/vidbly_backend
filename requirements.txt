@@ -11,3 +11,4 @@ python-jose[cryptography]==3.3.0
 python-multipart==0.0.9
 efipay==1.0.3
 stripe==8.6.0
+slowapi==0.1.9

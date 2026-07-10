@@ -25,6 +25,10 @@ def get_upload_url(
     Retorna uma URL temporária (pre-signed URL) para fazer upload direto pro S3.
     Dessa forma, o arquivo pesado não passa pelo nosso servidor FastAPI.
     """
+    allowed_types = ['video/mp4', 'video/quicktime', 'image/jpeg', 'image/png']
+    if request.file_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+
     # Create a unique file name
     timestamp = int(time.time())
     unique_id = uuid.uuid4().hex[:8]
