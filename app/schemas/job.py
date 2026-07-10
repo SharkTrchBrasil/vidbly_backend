@@ -52,7 +52,7 @@ class JobUpdate(BaseModel):
     max_creators: Optional[int] = None
     requires_product: Optional[bool] = None
     product_description: Optional[str] = None
-    product_id: Optional[UUID4] = None
+    product_id: Optional[uuid.UUID] = None
     
     # Billo fields
     editing_services: Optional[str] = None
