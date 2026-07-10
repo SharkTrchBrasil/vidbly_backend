@@ -44,3 +44,15 @@ def check_onboarding_status(account_id: str) -> bool:
     if len(account.requirements.currently_due) == 0:
         return True
     return False
+
+def transfer_to_creator(account_id: str, amount: float) -> str:
+    """
+    Transfere o valor pago para a conta conectada do criador.
+    amount deve ser em reais (ex: 50.00). Stripe usa centavos, então multiplicamos por 100.
+    """
+    transfer = stripe.Transfer.create(
+        amount=int(amount * 100),
+        currency="brl",
+        destination=account_id,
+    )
+    return transfer.id
