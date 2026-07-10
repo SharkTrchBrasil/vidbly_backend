@@ -16,19 +16,6 @@ class BrandProfileBase(BaseModel):
     contact_name: Optional[str] = None
     contact_phone: Optional[str] = None
 
-    # Billo fields
-    color: Optional[str] = None
-    core_message: Optional[str] = None
-    country_code: Optional[int] = None
-    currency: Optional[str] = "BRL"
-    days_to_approve_content: Optional[int] = 3
-    watermark_url: Optional[str] = None
-    cover_picture_url: Optional[str] = None
-    business_type: Optional[str] = None
-    lead_source: Optional[str] = None
-    icp: Optional[str] = None
-    facebook_url: Optional[str] = None
-
 class BrandProfileCreate(BrandProfileBase):
     pass
 

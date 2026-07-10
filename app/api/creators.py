@@ -21,6 +21,16 @@ def read_creator_profile_me(
         raise HTTPException(status_code=404, detail="Profile not found")
     return profile
 
+@router.get("/{creator_id}", response_model=CreatorProfileResponse)
+def get_creator_by_id(
+    creator_id: str,
+    db: Session = Depends(get_db)
+):
+    profile = db.query(CreatorProfile).filter(CreatorProfile.user_id == creator_id).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Creator not found")
+    return profile
+
 @router.post("/me", response_model=CreatorProfileResponse, status_code=status.HTTP_201_CREATED)
 def create_creator_profile_me(
     profile_in: CreatorProfileCreate,

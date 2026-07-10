@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 import uuid
 
 from ..database import get_db
@@ -10,6 +10,16 @@ from ..schemas.review import ReviewCreate, ReviewResponse
 from ..core.dependencies import get_current_active_user
 
 router = APIRouter()
+
+@router.get("", response_model=List[ReviewResponse])
+def get_reviews(
+    creator_id: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    query = db.query(Review)
+    if creator_id:
+        query = query.filter(Review.reviewee_id == creator_id)
+    return query.all()
 
 @router.post("", response_model=ReviewResponse, status_code=status.HTTP_201_CREATED)
 def create_review(

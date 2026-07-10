@@ -5,7 +5,8 @@ from .api import (
     auth, creators, brands, jobs, upload,
     job_applications, video_deliveries, video_revisions,
     reviews, payments, webhooks, notifications,
-    chat, products, wallets, creator_tags, discover
+    chat, products, wallets, creator_tags, discover,
+    chat_rooms, creator_wallet, favorites, disputes, portfolio
 )
 from .database import engine, Base
 import os
@@ -54,6 +55,11 @@ app.include_router(products.router, prefix=f"{settings.API_V1_STR}/products", ta
 app.include_router(wallets.router, prefix=f"{settings.API_V1_STR}/wallet", tags=["wallet"])
 app.include_router(creator_tags.router, prefix=f"{settings.API_V1_STR}/tags", tags=["tags"])
 app.include_router(discover.router, prefix=f"{settings.API_V1_STR}/discover", tags=["discover"])
+app.include_router(chat_rooms.router, prefix=f"{settings.API_V1_STR}/chat-rooms", tags=["chat"])
+app.include_router(creator_wallet.router, prefix=f"{settings.API_V1_STR}/creator-wallet", tags=["wallet"])
+app.include_router(favorites.router, prefix=f"{settings.API_V1_STR}/favorites", tags=["favorites"])
+app.include_router(disputes.router, prefix=f"{settings.API_V1_STR}/disputes", tags=["disputes"])
+app.include_router(portfolio.router, prefix=f"{settings.API_V1_STR}/portfolio", tags=["portfolio"])
 
 @app.get("/health")
 def health_check():

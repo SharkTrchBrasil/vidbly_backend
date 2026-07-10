@@ -38,12 +38,6 @@ class Settings(BaseSettings):
     # Database & Redis
     DATABASE_URL: str = aws_secrets.get("DATABASE_URL", os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/reelfy"))
     REDIS_URL: str = aws_secrets.get("REDIS_URL", os.getenv("REDIS_URL", "redis://localhost:6379"))
-    
-    # Efí
-    EFI_CLIENT_ID: str = os.getenv("EFI_CLIENT_ID", "")
-    EFI_CLIENT_SECRET: str = os.getenv("EFI_CLIENT_SECRET", "")
-    EFI_CERTIFICATE_PATH: str = os.getenv("EFI_CERTIFICATE_PATH", "")
-    PIX_KEY: str = os.getenv("PIX_KEY", "sua-chave-pix@vidbly.com")
 
     # AWS S3
     AWS_ACCESS_KEY_ID: str = os.getenv("AWS_ACCESS_KEY_ID", "")

@@ -13,4 +13,9 @@ from .product import Product
 from .wallet import BrandWallet
 from .creator_tag import CreatorTag, creator_tag_association
 from .creator_service import CreatorService
-
+from .chat_room import ChatRoom
+from .creator_wallet import CreatorWallet
+from .wallet_transaction import WalletTransaction
+from .favorite import Favorite
+from .dispute import Dispute
+from .creator_portfolio import CreatorPortfolioItem

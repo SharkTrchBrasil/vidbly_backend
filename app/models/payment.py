@@ -12,7 +12,7 @@ class Payment(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     amount = Column(DECIMAL(12, 2), nullable=False)
     currency = Column(String(3), default="BRL")
-    provider = Column(String(20), nullable=False) # efi, stripe
+    provider = Column(String(20), nullable=False) # stripe
     provider_txid = Column(String(255))
     status = Column(String(20), default="pending") # pending, completed, failed, refunded
     payment_type = Column(String(20), nullable=False) # charge, payout

@@ -18,7 +18,6 @@ class CreatorProfileBase(BaseModel):
     tiktok: Optional[str] = None
     youtube: Optional[str] = None
     bio: Optional[str] = None
-    social_links: Optional[dict] = None
     categories: Optional[List[str]] = None
     languages: Optional[List[str]] = None
     portfolio_urls: Optional[List[str]] = None
@@ -48,8 +47,6 @@ class CreatorProfileBase(BaseModel):
     partnership_ads_price: Optional[float] = None
     
     availability_status: Optional[str] = "available"
-    pix_key: Optional[str] = None
-    pix_key_type: Optional[str] = None
     city: Optional[str] = None
     state: Optional[str] = None
 
@@ -66,8 +63,6 @@ class CreatorProfileResponse(CreatorProfileBase):
     rating: float
     completed_jobs: int
     total_earned: float
-    pix_key: Optional[str] = None
-    pix_key_type: Optional[str] = None
     stripe_account_id: Optional[str] = None
     stripe_account_status: Optional[str] = "pending"
     stripe_onboarding_complete: Optional[bool] = False

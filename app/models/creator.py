@@ -55,8 +55,6 @@ class CreatorProfile(Base):
     response_time_hours = Column(Integer)
     availability_status = Column(String(20), default="available")
     is_approved = Column(Boolean, default=False)
-    pix_key = Column(String(255))
-    pix_key_type = Column(String(20))
     stripe_account_id = Column(String, nullable=True)
     stripe_account_status = Column(String, default="pending")
     stripe_onboarding_complete = Column(Boolean, default=False)

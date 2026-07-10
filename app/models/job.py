@@ -56,7 +56,6 @@ class Job(Base):
     deadline_days = Column(Integer, default=7)
     expires_at = Column(DateTime)
     status = Column(String(20), default='draft') # draft, open, in_progress, completed, cancelled
-    efi_txid = Column(String(100))
     paid_at = Column(DateTime)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
