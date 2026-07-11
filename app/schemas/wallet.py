@@ -16,3 +16,20 @@ class WalletResponse(WalletBase):
 
     class Config:
         from_attributes = True
+
+class WalletTransactionResponse(BaseModel):
+    id: UUID4
+    wallet_id: UUID4
+    wallet_type: str
+    amount: float
+    transaction_type: str
+    description: str
+    reference_id: Optional[str] = None
+    job_id: Optional[UUID4] = None
+    payment_id: Optional[UUID4] = None
+    category: Optional[str] = None
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

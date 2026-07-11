@@ -4,10 +4,11 @@ from datetime import datetime
 import uuid
 
 class VideoDeliveryBase(BaseModel):
-    s3_key: str
+    pass
 
 class VideoDeliveryCreate(VideoDeliveryBase):
     job_id: uuid.UUID
+    original_s3_key: str
 
 class VideoDeliveryUpdate(BaseModel):
     status: str
@@ -20,6 +21,8 @@ class VideoDeliveryResponse(VideoDeliveryBase):
     revision_count: int
     submitted_at: datetime
     reviewed_at: Optional[datetime] = None
+    watermarked_url: Optional[str] = None
+    original_url: Optional[str] = None
 
     class Config:
         from_attributes = True

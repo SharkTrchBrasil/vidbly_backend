@@ -15,6 +15,9 @@ class WalletTransaction(Base):
     transaction_type = Column(String(20), nullable=False) # "credit" or "debit"
     description = Column(String, nullable=False)
     reference_id = Column(String, nullable=True) # E.g., job_id or payment_id
+    job_id = Column(UUID(as_uuid=True), ForeignKey("jobs.id"), nullable=True)
+    payment_id = Column(UUID(as_uuid=True), ForeignKey("payments.id"), nullable=True)
+    category = Column(String, nullable=True) # topup, job_charge, job_payout, refund, bonus
     status = Column(String(20), default="completed") # pending, completed, failed
     
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

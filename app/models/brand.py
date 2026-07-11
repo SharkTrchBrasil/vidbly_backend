@@ -23,5 +23,6 @@ class BrandProfile(Base):
     plan_type = Column(String(20), default="free")
     total_spent = Column(DECIMAL(12, 2), default=0.0)
     is_verified = Column(Boolean, default=False)
+    stripe_customer_id = Column(String, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))

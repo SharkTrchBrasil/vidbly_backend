@@ -56,3 +56,39 @@ def transfer_to_creator(account_id: str, amount: float) -> str:
         destination=account_id,
     )
     return transfer.id
+
+def create_stripe_customer(email: str, name: str) -> str:
+    """
+    Creates a customer on Stripe for the brand.
+    """
+    customer = stripe.Customer.create(
+        email=email,
+        name=name
+    )
+    return customer.id
+
+def create_checkout_session(customer_id: str, amount: float, currency: str, job_id: str, success_url: str, cancel_url: str) -> str:
+    """
+    Creates a Stripe Checkout session to pay for a job.
+    """
+    session = stripe.checkout.Session.create(
+        customer=customer_id,
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': currency,
+                'product_data': {
+                    'name': f'Job Payment - {job_id}',
+                },
+                'unit_amount': int(amount * 100),
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=success_url,
+        cancel_url=cancel_url,
+        metadata={
+            'job_id': job_id
+        }
+    )
+    return session.url
